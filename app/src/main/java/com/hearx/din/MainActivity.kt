@@ -2,87 +2,63 @@ package com.hearx.din
 
 import android.media.MediaPlayer
 import android.os.Bundle
-import android.util.Log
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import com.hearx.din.databinding.ActivityMainBinding
-
+import com.hearx.din.viewmodel.HearXViewModel
+import org.koin.android.ext.android.inject
 
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
     private lateinit var mediaPlayerDigits: MediaPlayer
     private lateinit var mediaPlayerNoise: MediaPlayer
-    private var currentIndexNoise = 5
-    private var currentIndexDigit = 0
-    var numberDisplayed = 54
-
-    private var arrayListDigits = ArrayList<Int>()
-    private var arrayListNoiseLevel = ArrayList<Int>()
+    private val hearXViewModel: HearXViewModel by inject()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        digitInNoiseInit()
-        mediaPlayerNoise = MediaPlayer.create(this, arrayListNoiseLevel[currentIndexNoise])
-        mediaPlayerDigits = MediaPlayer.create(this, arrayListDigits[currentIndexDigit])
+        answerTheTest()
+        hearXViewModel.digitInNoiseInit()
+        mediaPlayerDigits = MediaPlayer.create(this, hearXViewModel.arrayListDigits[hearXViewModel.currentIndexDigit])
+        //if rounds <10 call takeDigitTriplet
+        //should start once and iterate 9 times
         takeDigitTriplet()
-        //playSound()
-    }
-
-    private fun digitInNoiseInit(){
-        arrayListDigits.add(0, R.raw.digit_1)
-        arrayListDigits.add(1, R.raw.digit_2)
-        arrayListDigits.add(2, R.raw.digit_3)
-        arrayListDigits.add(3, R.raw.digit_4)
-        arrayListDigits.add(4, R.raw.digit_5)
-        arrayListDigits.add(5, R.raw.digit_6)
-        arrayListDigits.add(6, R.raw.digit_7)
-        arrayListDigits.add(7, R.raw.digit_8)
-        arrayListDigits.add(8, R.raw.digit_9)
-
-        arrayListNoiseLevel.add(0, R.raw.noise_1)
-        arrayListNoiseLevel.add(1, R.raw.noise_2)
-        arrayListNoiseLevel.add(2, R.raw.noise_3)
-        arrayListNoiseLevel.add(3, R.raw.noise_4)
-        arrayListNoiseLevel.add(4, R.raw.noise_5)
-        arrayListNoiseLevel.add(5, R.raw.noise_6)
-        arrayListNoiseLevel.add(6, R.raw.noise_7)
-        arrayListNoiseLevel.add(7, R.raw.noise_8)
-        arrayListNoiseLevel.add(8, R.raw.noise_9)
-        arrayListNoiseLevel.add(9, R.raw.noise_10)
     }
 
     private fun takeDigitTriplet() {
-            mediaPlayerNoise.start()
-            val triplet = (0..arrayListDigits.size).asSequence().shuffled().take(3).toList()
+        hearXViewModel.numberOfRound += 1
+        binding.roundNumber.text = "${hearXViewModel.numberOfRound}"
+        val triplet = (0..<hearXViewModel.arrayListDigits.size).asSequence().shuffled().take(3).toList()
+        hearXViewModel.triplet = triplet
+        mediaPlayerNoise = MediaPlayer.create(this, hearXViewModel.arrayListNoiseLevel[hearXViewModel.currentIndexNoise])
+        mediaPlayerNoise.start()
+        for (index in triplet) {
+            show(index)
+        }
+        hearXViewModel.tripletPlayed = triplet.joinToString("")
+    }
 
-            for (index in triplet) {
-                delay()
-                Log.d("index","$index")
-                show(index)
-                delay()
+    fun answerTheTest(){
+        binding.submitButton.setOnClickListener {
+            val answer = binding.editTextNumber.text
+            hearXViewModel.tripletAnswered = answer.toString()
+            val results = "played: ${hearXViewModel.tripletPlayed} and answered: ${hearXViewModel.tripletAnswered}"
+            if(hearXViewModel.tripletPlayed == hearXViewModel.tripletAnswered){
+                //if answer matches the digit increase noise index and play again or else decrease
+                hearXViewModel.currentIndexNoise-=1
+            }else{
+                hearXViewModel.currentIndexNoise-=1
             }
-        }
-
-    fun show(index:Int){
-        binding.indexId.text = "$index"
-        Toast.makeText(this,"index $index is playing",Toast.LENGTH_SHORT).show()
-        mediaPlayerDigits = MediaPlayer.create(this, arrayListDigits[index])
-        //delay()
-    }
-
-    fun delay(){
-        try {
-            Thread.sleep(2000)
-        } catch (ie: InterruptedException) {
-            Thread.currentThread().interrupt()
+            Toast.makeText(this,results,Toast.LENGTH_SHORT).show()
+            takeDigitTriplet()
         }
     }
 
-    fun playSound() {
-        binding.indexId.text = "digit $numberDisplayed is showing"
+    fun show(index: Int) {
+        //play digit
+        mediaPlayerDigits = MediaPlayer.create(this, hearXViewModel.arrayListDigits[index])
     }
 }
