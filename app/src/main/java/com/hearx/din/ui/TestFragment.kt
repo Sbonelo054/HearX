@@ -17,36 +17,31 @@ class TestFragment : Fragment() {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         binding = FragmentTestBinding.inflate(inflater, container, false)
-        hearXViewModel.digitInNoiseInit()
         answerTheTest()
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        hearXViewModel.randomizeDigitTriplet{
-            getBinding()
-        }
+        hearXViewModel.randomizeDigitTriplet()
     }
-
     private fun getBinding(): FragmentTestBinding{
         return binding
     }
 
-    private fun answerTheTest() {
-        binding.submitButton.setOnClickListener {
+     fun answerTheTest() {
             val answer = binding.editTextNumber.text
-            if (answer.isNotEmpty()) {
-                hearXViewModel.submit(answer.toString()){
+            if (answer.length == 3) {
+                hearXViewModel.tripletAnswered = answer.toString()
+                hearXViewModel.submit{
                     getBinding()
                 }
             } else {
                 Toast.makeText(requireContext(), "Please enter 3 digits", Toast.LENGTH_SHORT).show()
             }
-        }
-        binding.exitButton.setOnClickListener {
-            findNavController().navigateUp()
-        }
     }
 
+    fun navigateBack(){
+        findNavController().navigateUp()
+    }
 }
