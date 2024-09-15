@@ -5,7 +5,9 @@ import android.os.Bundle
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
+import com.google.android.material.snackbar.Snackbar
 import com.hearx.din.databinding.ActivityMainBinding
+import com.hearx.din.model.TestRound
 import com.hearx.din.viewmodel.HearXViewModel
 import org.koin.android.ext.android.inject
 
@@ -22,23 +24,25 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding.root)
         answerTheTest()
         hearXViewModel.digitInNoiseInit()
-        mediaPlayerDigits = MediaPlayer.create(this, hearXViewModel.arrayListDigits[hearXViewModel.currentIndexDigit])
-        //if rounds <10 call takeDigitTriplet
-        //should start once and iterate 9 times
-        takeDigitTriplet()
+        randomizeDigitTriplet()
     }
 
-    private fun takeDigitTriplet() {
+    private fun randomizeDigitTriplet() {
         hearXViewModel.numberOfRound += 1
         binding.roundNumber.text = "${hearXViewModel.numberOfRound}"
         val triplet = (0..<hearXViewModel.arrayListDigits.size).asSequence().shuffled().take(3).toList()
-        hearXViewModel.triplet = triplet
-        mediaPlayerNoise = MediaPlayer.create(this, hearXViewModel.arrayListNoiseLevel[hearXViewModel.currentIndexNoise])
-        mediaPlayerNoise.start()
-        for (index in triplet) {
-            show(index)
+        playNoise()
+        for (digit in triplet) {
+            //2 seconds delay
+            playDigits(digit)
+            //2 seconds delay
         }
         hearXViewModel.tripletPlayed = triplet.joinToString("")
+    }
+
+    fun playNoise(){
+        mediaPlayerNoise = MediaPlayer.create(this, hearXViewModel.arrayListNoiseLevel[hearXViewModel.currentIndexNoise])
+        mediaPlayerNoise.start()
     }
 
     fun answerTheTest(){
@@ -46,19 +50,26 @@ class MainActivity : AppCompatActivity() {
             val answer = binding.editTextNumber.text
             hearXViewModel.tripletAnswered = answer.toString()
             val results = "played: ${hearXViewModel.tripletPlayed} and answered: ${hearXViewModel.tripletAnswered}"
+            hearXViewModel.testRounds.add(TestRound(hearXViewModel.currentIndexNoise.toString(),hearXViewModel.tripletPlayed,hearXViewModel.tripletAnswered))
             if(hearXViewModel.tripletPlayed == hearXViewModel.tripletAnswered){
-                //if answer matches the digit increase noise index and play again or else decrease
-                hearXViewModel.currentIndexNoise-=1
+                hearXViewModel.currentIndexNoise+=1
             }else{
                 hearXViewModel.currentIndexNoise-=1
             }
             Toast.makeText(this,results,Toast.LENGTH_SHORT).show()
-            takeDigitTriplet()
+            if (hearXViewModel.numberOfRound<10){
+                randomizeDigitTriplet()
+            }else{
+                //submit the score to the api
+               Snackbar.make(binding.root,"The test has been completed",Snackbar.LENGTH_LONG).show()
+            }
+            binding.editTextNumber.text.clear()
         }
     }
 
-    fun show(index: Int) {
+    fun playDigits(digit: Int) {
         //play digit
-        mediaPlayerDigits = MediaPlayer.create(this, hearXViewModel.arrayListDigits[index])
+        mediaPlayerDigits = MediaPlayer.create(this, hearXViewModel.arrayListDigits[digit])
+        mediaPlayerDigits.start()
     }
 }
