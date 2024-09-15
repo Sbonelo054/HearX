@@ -1,12 +1,8 @@
 package com.hearx.din.viewmodel
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
 import com.hearx.din.R
-import com.hearx.din.model.TripletPlayed
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
+import com.hearx.din.model.TestRound
 
 class HearXViewModel: ViewModel() {
     var currentIndexNoise = 5
@@ -14,17 +10,9 @@ class HearXViewModel: ViewModel() {
     var tripletPlayed =""
     var tripletAnswered = ""
     var numberOfRound = 0
-    var rounds: List<String> = emptyList()
-    var triplet: List<Int> = emptyList()
-    var answer: List<Int> = emptyList()
-    lateinit var testRound: TripletPlayed
-
+    var testRounds: ArrayList<TestRound> = ArrayList()
     var arrayListDigits = ArrayList<Int>()
     var arrayListNoiseLevel = ArrayList<Int>()
-
-    fun setTripletPlayed(testRound: TripletPlayed){
-        this.testRound = testRound
-    }
 
     fun digitInNoiseInit(){
         arrayListDigits.add(0, R.raw.digit_1)
@@ -47,20 +35,5 @@ class HearXViewModel: ViewModel() {
         arrayListNoiseLevel.add(7, R.raw.noise_8)
         arrayListNoiseLevel.add(8, R.raw.noise_9)
         arrayListNoiseLevel.add(9, R.raw.noise_10)
-    }
-
-    fun show(index:Int){
-        //mediaPlayerDigits = MediaPlayer.create(this, arrayListDigits[index])
-    }
-
-    private fun takeDigitTriplet() {
-        viewModelScope.launch {
-            delay(2000)
-            val triplet = (0..arrayListDigits.size).asSequence().shuffled().take(3).toList()
-            for (index in triplet) {
-                Log.d("index","$index")
-                show(index)
-            }
-        }
     }
 }
