@@ -7,6 +7,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.navigation.fragment.findNavController
+import androidx.navigation.ui.navigateUp
 import com.google.android.material.snackbar.Snackbar
 import com.hearx.din.R
 import com.hearx.din.databinding.FragmentTestBinding
@@ -31,7 +33,7 @@ class TestFragment : Fragment() {
 
     private fun randomizeDigitTriplet() {
         hearXViewModel.numberOfRound += 1
-        binding.roundNumber.text = "${hearXViewModel.numberOfRound}"
+        binding.roundNumber.text = "Round: ${hearXViewModel.numberOfRound}"
         val triplet = (0..<hearXViewModel.arrayListDigits.size).asSequence().shuffled().take(3).toList()
         playNoise()
         for (digit in triplet) {
@@ -42,12 +44,12 @@ class TestFragment : Fragment() {
         hearXViewModel.tripletPlayed = triplet.joinToString("")
     }
 
-    fun playNoise(){
+    private fun playNoise(){
         mediaPlayerNoise = MediaPlayer.create(requireActivity(), hearXViewModel.arrayListNoiseLevel[hearXViewModel.currentIndexNoise])
         mediaPlayerNoise.start()
     }
 
-    fun answerTheTest(){
+    private fun answerTheTest(){
         binding.submitButton.setOnClickListener {
             val answer = binding.editTextNumber.text
             if(answer.isNotEmpty()){
@@ -55,12 +57,12 @@ class TestFragment : Fragment() {
                 val results = "played: ${hearXViewModel.tripletPlayed} and answered: ${hearXViewModel.tripletAnswered}"
                 hearXViewModel.testRounds.add(TestRound(hearXViewModel.currentIndexNoise.toString(),hearXViewModel.tripletPlayed,hearXViewModel.tripletAnswered))
                 if(hearXViewModel.tripletPlayed == hearXViewModel.tripletAnswered){
-                    hearXViewModel.currentIndexNoise+=1
+                    increaseNoise()
                 }else{
-                    hearXViewModel.currentIndexNoise-=1
+                    decreaseNoise()
                 }
                 Toast.makeText(requireActivity(),results, Toast.LENGTH_SHORT).show()
-                if (hearXViewModel.numberOfRound<10){
+                if (hearXViewModel.numberOfRound<9){
                     randomizeDigitTriplet()
                 }else{
                     val completeTest = "Complete Test"
@@ -73,9 +75,22 @@ class TestFragment : Fragment() {
                 Toast.makeText(requireContext(),"Please enter 3 digits", Toast.LENGTH_SHORT).show()
             }
         }
+        binding.exitButton.setOnClickListener {
+            findNavController().navigateUp()
+        }
     }
 
-    fun playDigits(digit: Int) {
+    private fun decreaseNoise(){
+        if(hearXViewModel.currentIndexNoise>0)
+        hearXViewModel.currentIndexNoise-=1
+    }
+
+    private fun increaseNoise(){
+        if (hearXViewModel.currentIndexNoise<9)
+        hearXViewModel.currentIndexNoise+=1
+    }
+
+    private fun playDigits(digit: Int) {
         //play digit
         mediaPlayerDigits = MediaPlayer.create(requireActivity(), hearXViewModel.arrayListDigits[digit])
         mediaPlayerDigits.start()
