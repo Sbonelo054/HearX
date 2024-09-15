@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/hearx_navigation"
+    app:startDestination="@id/homeFragment">
+
+    <fragment
+        android:id="@+id/homeFragment"
+        android:name="com.hearx.din.ui.HomeFragment"
+        android:label="fragment_home"
+        tools:layout="@layout/fragment_home" >
+
+        <action
+            android:id="@+id/action_homeFragment_to_testFragment"
+            app:destination="@id/testFragment" />
+        <action
+            android:id="@+id/action_homeFragment_to_testHistoryFragment"
+            app:destination="@id/testHistoryFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/testFragment"
+        android:name="com.hearx.din.ui.TestFragment"
+        android:label="fragment_test"
+        tools:layout="@layout/fragment_test" />
+    <fragment
+        android:id="@+id/testHistoryFragment"
+        android:name="com.hearx.din.TestHistoryFragment"
+        android:label="fragment_test_history"
+        tools:layout="@layout/fragment_test_history" />
+
+
+</navigation>
