@@ -21,7 +21,7 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding.root)
         setSupportActionBar(binding.toolbar)
         val window = this.window
-        window.statusBarColor = resources.getColor(com.google.android.material.R.color.cardview_dark_background)
+        window.statusBarColor = resources.getColor(R.color.base_color)
         val navController = findNavController(R.id.nav_host_fragment)
         appBarConfiguration = AppBarConfiguration(navController.graph)
         setupActionBarWithNavController(navController, appBarConfiguration)
