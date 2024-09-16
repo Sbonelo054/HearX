@@ -1,5 +1,6 @@
 <resources>
     <string name="app_name">HearX Digit In Noise</string>
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="exit_test">Exit Test</string>
+    <string name="submit">Submit</string>
+    <string name="please_enter_3_digits">Please enter 3 digits</string>
 </resources>

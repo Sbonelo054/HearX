@@ -46,7 +46,6 @@ class HearXViewModel(private val application: Application) : AndroidViewModel(ap
 
     fun newSubmit(answer: String) {
         setTripletAnswered(answer)
-        val results = "played: ${_newTripletPlayed.value} and answered: ${_newTripletAnswered.value}"
         testRound = TestRound(_newCurrentIndexNoise.toString(), _newTripletPlayed.value, answer)
         addRound(testRound)
         if (_newTripletPlayed.value == _newTripletAnswered.value) {
@@ -54,7 +53,7 @@ class HearXViewModel(private val application: Application) : AndroidViewModel(ap
         } else {
             newDecreaseNoise()
         }
-        Toast.makeText(getContext(), results, Toast.LENGTH_SHORT).show()
+
         //keep an eye here
         if (_newNumberOfRounds.value!! <= 9) {
             newRandomizeDigitTriplet()
