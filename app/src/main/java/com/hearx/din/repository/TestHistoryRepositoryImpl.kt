@@ -5,6 +5,7 @@ import androidx.lifecycle.LiveData
 import com.hearx.din.database.TestHistoryDao
 import com.hearx.din.database.TestHistoryDatabase
 import com.hearx.din.database.TestHistoryTable
+import kotlinx.coroutines.flow.flow
 
 class TestHistoryRepositoryImpl(application: Application): TestHistoryRepository {
     private lateinit var dao: TestHistoryDao
@@ -20,7 +21,8 @@ class TestHistoryRepositoryImpl(application: Application): TestHistoryRepository
         dao.saveHistory(testHistoryTable)
     }
 
-    override fun getTestHistory(): LiveData<List<TestHistoryTable>> {
-       return dao.getHistory()
+    override fun getTestHistory() = flow{
+        val history = dao.getHistory()
+        emit(history)
     }
 }

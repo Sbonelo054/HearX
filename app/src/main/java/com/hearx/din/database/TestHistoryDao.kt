@@ -4,6 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.Query
+import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface TestHistoryDao {
@@ -11,5 +12,5 @@ interface TestHistoryDao {
     suspend fun saveHistory(testHistoryTable: TestHistoryTable)
 
     @Query("SELECT * FROM test_history")
-    fun getHistory(): LiveData<List<TestHistoryTable>>
+    fun getHistory(): List<TestHistoryTable>
 }
