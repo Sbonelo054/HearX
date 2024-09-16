@@ -8,7 +8,7 @@
     <fragment
         android:id="@+id/homeFragment"
         android:name="com.hearx.din.ui.HomeFragment"
-        android:label="fragment_home"
+        android:label=""
         tools:layout="@layout/fragment_home" >
 
         <action
@@ -22,12 +22,12 @@
     <fragment
         android:id="@+id/testFragment"
         android:name="com.hearx.din.ui.TestFragment"
-        android:label="fragment_test"
+        android:label=""
         tools:layout="@layout/fragment_test" />
+
     <fragment
         android:id="@+id/testHistoryFragment"
         android:name="com.hearx.din.ui.HistoryFragment"
-        android:label="fragment_test_history"
+        android:label="@string/tests_history"
         tools:layout="@layout/fragment_history" />
-
 </navigation>

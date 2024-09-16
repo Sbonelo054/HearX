@@ -6,4 +6,5 @@
     <string name="view_results">View Results</string>
     <string name="start_test">Start test</string>
     <string name="welcome_to_hear_x">Welcome to Hear X</string>
+    <string name="tests_history">Tests History</string>
 </resources>

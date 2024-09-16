@@ -17,9 +17,13 @@ class TestHistoryAdapter(private val historyList: List<TestHistoryTable>): Recyc
 
     override fun onBindViewHolder(holder: TestHistoryAdapter.TestHistoryViewHolder, position: Int) {
         val history = historyList[position]
-        val date = "Test was take on ${history.testDate}"
-        holder.date.text = date
+        val date = "Test was taken on: ${history.testDate}"
         val coordinates = "Your score was: ${history.score}"
+        val tripletPlayed = "Last triplet played was: ${history.played}"
+        val tripletAnswered = "Last triplet answered was: ${history.answered}"
+        holder.date.text = date
+        holder.played.text = tripletPlayed
+        holder.answered.text = tripletAnswered
         holder.score.text = coordinates
     }
 
@@ -30,5 +34,7 @@ class TestHistoryAdapter(private val historyList: List<TestHistoryTable>): Recyc
     inner class TestHistoryViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         var date: TextView = itemView.findViewById(R.id.history_date)
         var score: TextView = itemView.findViewById(R.id.history_score)
+        var played: TextView = itemView.findViewById(R.id.history_played)
+        var answered: TextView = itemView.findViewById(R.id.history_answered)
     }
 }

@@ -5,12 +5,11 @@ import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 
-@Database(entities = [TestHistoryTable::class], version = 1)
+@Database(entities = [TestHistoryTable::class], version = 2)
 abstract class TestHistoryDatabase: RoomDatabase() {
     abstract fun testHistoryDao(): TestHistoryDao
 
     companion object {
-        @Volatile
         private var instance: TestHistoryDatabase? = null
 
         @Synchronized

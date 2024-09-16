@@ -1,5 +1,8 @@
 package com.hearx.din.ui
 
+import android.app.AlertDialog
+import android.app.Dialog
+import android.content.DialogInterface
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -14,7 +17,9 @@ import com.hearx.din.databinding.FragmentTestBinding
 import com.hearx.din.viewmodel.HearXViewModel
 import com.hearx.din.viewmodel.TestHistoryViewModel
 import org.koin.android.ext.android.inject
+import java.text.SimpleDateFormat
 import java.util.Calendar
+import java.util.Date
 
 class TestFragment : Fragment() {
     private lateinit var binding: FragmentTestBinding
@@ -40,13 +45,35 @@ class TestFragment : Fragment() {
 
     private fun saveHistory() {
         var score = 0
-        hearXViewModel.newScore.observe(viewLifecycleOwner) { score = it }
+        var tripletPlayed = ""
+        var tripletAnswered = ""
+
         hearXViewModel.newNumberOfRounds.observe(viewLifecycleOwner) { number ->
             if (number == 10) {
-                val date = Calendar.getInstance().time
-                testHistoryViewModel.saveTestHistory(TestHistoryTable(date.toString(), score.toString()))
+                hearXViewModel.newScore.observe(viewLifecycleOwner) { score = it }
+                hearXViewModel.newTripletPlayed.observe(viewLifecycleOwner) {
+                    tripletPlayed = it
+                }
+                hearXViewModel.newTripletAnswered.observe(viewLifecycleOwner) {
+                    tripletAnswered = it
+                }
+                showScore(score.toString())
+                testHistoryViewModel.saveTestHistory(TestHistoryTable(hearXViewModel.getDate(), score.toString(),tripletPlayed,tripletAnswered))
             }
         }
+    }
+
+    private fun showScore(score: String){
+        val testScore = "Final score is : $score"
+        val meanResponse = "Mean response in ms : 500"
+        val alert: Dialog?
+        val builder = AlertDialog.Builder(context)
+        builder.setTitle(testScore).setMessage(meanResponse).setCancelable(true).setPositiveButton("Ok") { dialog: DialogInterface?, _: Int ->
+            findNavController().navigateUp()
+            dialog?.dismiss()
+        }
+        alert = builder.create()
+        alert?.show()
     }
 
     fun submitAnswer() {

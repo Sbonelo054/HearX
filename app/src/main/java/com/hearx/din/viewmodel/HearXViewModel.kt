@@ -14,6 +14,7 @@ import com.hearx.din.databinding.FragmentTestBinding
 import com.hearx.din.model.TestRound
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import java.util.Calendar
 
 class HearXViewModel(private val application: Application) : AndroidViewModel(application) {
     private var arrayListDigits: List<Int> = emptyList()
@@ -35,7 +36,6 @@ class HearXViewModel(private val application: Application) : AndroidViewModel(ap
         _newTestRounds.value = _newTestRounds.value?.plus(testRound) ?: listOf(testRound)
     }
 
-    //livedata
     val newCurrentIndexNoise : LiveData<Int> get() = _newCurrentIndexNoise
     val newCurrentIndexDigit : LiveData<Int> get() = _newCurrentIndexDigit
     val newTripletPlayed : LiveData<String> get() = _newTripletPlayed
@@ -53,7 +53,7 @@ class HearXViewModel(private val application: Application) : AndroidViewModel(ap
         } else {
             newDecreaseNoise()
         }
-        //keep an eye here
+
         if (_newNumberOfRounds.value!! <= 9) {
             newRandomizeDigitTriplet()
         } else {
@@ -62,7 +62,8 @@ class HearXViewModel(private val application: Application) : AndroidViewModel(ap
         }
     }
 
-    //keep an eye here
+    fun getDate() = Calendar.getInstance().time.toString().take(11)
+
     private fun newIncreaseNoise(){
         if(_newCurrentIndexNoise.value!! < 9){
             _newCurrentIndexNoise.value = _newCurrentIndexNoise.value?.plus(1)
@@ -70,7 +71,6 @@ class HearXViewModel(private val application: Application) : AndroidViewModel(ap
         _newScore.value = _newScore.value?.plus(_newCurrentIndexNoise.value!!)
     }
 
-    //keep an eye here
     private fun newDecreaseNoise(){
         if(_newCurrentIndexNoise.value!! > 0){
             _newCurrentIndexNoise.value = _newCurrentIndexNoise.value?.minus(1)
@@ -95,7 +95,6 @@ class HearXViewModel(private val application: Application) : AndroidViewModel(ap
     fun newRandomizeDigitTriplet() {
         val triplet = arrayListDigits.indices.asSequence().shuffled().take(3).toList()
         viewModelScope.launch {
-            //ra
             playNoise()
             for (digit in triplet) {
                 delay(2000)
@@ -118,7 +117,6 @@ class HearXViewModel(private val application: Application) : AndroidViewModel(ap
         }
     }
 
-    //keep an eye here
     private fun playNoise() {
         mediaPlayerNoise = MediaPlayer.create(getContext(), arrayListNoiseLevel[_newCurrentIndexNoise.value!!])
         mediaPlayerNoise.start()
