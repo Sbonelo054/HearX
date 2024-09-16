@@ -38,36 +38,7 @@ class TestFragment : Fragment() {
         hearXViewModel.newRandomizeDigitTriplet()
     }
 
-    private fun getBinding(): FragmentTestBinding{
-        return binding
-    }
-
-    private fun answerTheTest() {
-        binding.submitButton.setOnClickListener {
-            val answer = binding.editTextNumber.text
-            if (answer.isNotEmpty()) {
-                hearXViewModel.newIncreaseNumberOfRounds()
-                hearXViewModel.submit(answer.toString()){
-                    getBinding()
-                }
-            } else {
-                Toast.makeText(requireContext(), "Please enter 3 digits", Toast.LENGTH_SHORT).show()
-            }
-            answer.clear()
-            /*  if(hearXViewModel.numberOfRound == 10){
-                  val date = Calendar.getInstance().time
-                  val score = hearXViewModel.score
-                  testHistoryViewModel.saveTestHistory(TestHistoryTable(date.toString(),score.toString()))
-              }*/
-        }
-        binding.exitButton.setOnClickListener {
-            hearXViewModel.stopSound()
-            findNavController().navigateUp()
-        }
-    }
-    // -----------------------------------------------------------------------------------------------------------------------------------------------------
-
-    fun saveHistory(){
+    private fun saveHistory(){
         var score = 0
         hearXViewModel.newScore.observe(viewLifecycleOwner){ score = it }
         hearXViewModel.newNumberOfRounds.observe(viewLifecycleOwner){number->

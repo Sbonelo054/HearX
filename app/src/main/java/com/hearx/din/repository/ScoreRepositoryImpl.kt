@@ -7,8 +7,8 @@ import com.hearx.din.networking.Client
 class ScoreRepositoryImpl: ScoreRepository {
     private lateinit var api: API
 
-    override suspend fun submitScore(resultsData: ResultsData) {
+    override suspend fun submitScore(resultsData: ResultsData): String {
         api = Client.instance.create(API::class.java)
-
+        return ""
     }
 }
