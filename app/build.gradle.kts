@@ -52,14 +52,15 @@ dependencies {
     implementation(libs.navigation)
     implementation(libs.navigation.fragment)
     implementation(libs.koin.annotations)
+
     implementation(libs.koin.core)
     implementation(libs.koin.android)
     implementation(libs.koin.compiler)
-   /* implementation(libs.room.runtime)
+    implementation(libs.room.runtime)
     annotationProcessor(libs.room.compiler)
     ksp(libs.room.compiler)
     implementation(libs.room.ktx)
-    implementation(libs.room.common)*/
+    implementation(libs.room.common)
     implementation(libs.androidx.constraintlayout)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
