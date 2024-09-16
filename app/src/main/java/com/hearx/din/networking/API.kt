@@ -1,6 +1,7 @@
 package com.hearx.din.networking
 
 import com.hearx.din.model.ResultsData
+import kotlinx.coroutines.flow.Flow
 import retrofit2.http.Body
 import retrofit2.http.POST
 import retrofit2.http.Path

@@ -53,7 +53,6 @@ class HearXViewModel(private val application: Application) : AndroidViewModel(ap
         } else {
             newDecreaseNoise()
         }
-
         //keep an eye here
         if (_newNumberOfRounds.value!! <= 9) {
             newRandomizeDigitTriplet()
@@ -88,7 +87,9 @@ class HearXViewModel(private val application: Application) : AndroidViewModel(ap
     }
 
     fun newIncreaseNumberOfRounds(){
-        _newNumberOfRounds.value = _newNumberOfRounds.value?.plus(1)
+        if(_newNumberOfRounds.value!! <10) {
+            _newNumberOfRounds.value = _newNumberOfRounds.value?.plus(1)
+        }
     }
 
     fun newRandomizeDigitTriplet() {

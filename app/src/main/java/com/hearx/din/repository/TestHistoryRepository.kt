@@ -1,10 +1,10 @@
 package com.hearx.din.repository
 
-import androidx.lifecycle.LiveData
 import com.hearx.din.database.TestHistoryTable
+import kotlinx.coroutines.flow.Flow
 
 interface TestHistoryRepository {
     suspend fun saveTestHistory(testHistoryTable: TestHistoryTable)
 
-    fun getTestHistory(): LiveData<List<TestHistoryTable>>
+    fun getTestHistory(): Flow<List<TestHistoryTable>>
 }

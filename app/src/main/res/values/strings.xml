@@ -3,4 +3,7 @@
     <string name="exit_test">Exit Test</string>
     <string name="submit">Submit</string>
     <string name="please_enter_3_digits">Please enter 3 digits</string>
+    <string name="view_results">View Results</string>
+    <string name="start_test">Start test</string>
+    <string name="welcome_to_hear_x">Welcome to Hear X</string>
 </resources>

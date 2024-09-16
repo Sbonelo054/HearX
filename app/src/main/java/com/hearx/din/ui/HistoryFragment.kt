@@ -32,8 +32,8 @@ class HistoryFragment : Fragment() {
         showHistory()
     }
 
-    fun showHistory() {
-        historyViewModel.getTestHistory().observe(viewLifecycleOwner) { response ->
+    private fun showHistory() {
+        historyViewModel.testHistory.observe(viewLifecycleOwner) { response ->
             if (response != null) {
                 adapter = TestHistoryAdapter(response)
                 binding.historyRecyclerview.setHasFixedSize(true)
