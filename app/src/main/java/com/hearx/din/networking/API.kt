@@ -8,5 +8,5 @@ import retrofit2.http.Path
 interface API {
 
     @POST("")
-    fun submitHearingResults(@Body data: ResultsData)
+    fun submitHearingResults(@Body data: ResultsData): String
 }

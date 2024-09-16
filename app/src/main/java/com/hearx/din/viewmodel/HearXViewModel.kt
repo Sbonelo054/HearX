@@ -16,13 +16,6 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 class HearXViewModel(private val application: Application) : AndroidViewModel(application) {
-    private var currentIndexNoise = 5
-    private var currentIndexDigit = 0
-    private var tripletPlayed = ""
-    private var tripletAnswered = ""
-    var numberOfRound = 1
-    var score = 5
-    var testRounds: ArrayList<TestRound> = ArrayList()
     private var arrayListDigits: List<Int> = emptyList()
     private var arrayListNoiseLevel: List<Int> = emptyList()
     private lateinit var mediaPlayerDigits: MediaPlayer
@@ -38,7 +31,7 @@ class HearXViewModel(private val application: Application) : AndroidViewModel(ap
     private var _newTestRounds: MutableLiveData<List<TestRound>> = MutableLiveData(listOf())
     val newTestRounds: LiveData<List<TestRound>> = _newTestRounds
 
-    fun addRound(testRound: TestRound){
+    private fun addRound(testRound: TestRound){
         _newTestRounds.value = _newTestRounds.value?.plus(testRound) ?: listOf(testRound)
     }
 
@@ -67,12 +60,12 @@ class HearXViewModel(private val application: Application) : AndroidViewModel(ap
             newRandomizeDigitTriplet()
         } else {
             //submit the score to the api
-            Log.d("Test-Rounds-Data", "$testRounds")
+            Log.d("Test-Rounds-Data", "$_newTestRounds")
         }
     }
 
     //keep an eye here
-    fun newIncreaseNoise(){
+    private fun newIncreaseNoise(){
         if(_newCurrentIndexNoise.value!! < 9){
             _newCurrentIndexNoise.value = _newCurrentIndexNoise.value?.plus(1)
         }
@@ -80,18 +73,18 @@ class HearXViewModel(private val application: Application) : AndroidViewModel(ap
     }
 
     //keep an eye here
-    fun newDecreaseNoise(){
+    private fun newDecreaseNoise(){
         if(_newCurrentIndexNoise.value!! > 0){
             _newCurrentIndexNoise.value = _newCurrentIndexNoise.value?.minus(1)
         }
         _newScore.value = _newScore.value?.minus(_newCurrentIndexNoise.value!!)
     }
 
-    fun setTripletPlayed(numbersPlayed: String){
+    private fun setTripletPlayed(numbersPlayed: String){
         _newTripletPlayed.value = numbersPlayed
     }
 
-    fun setTripletAnswered(answer: String){
+    private fun setTripletAnswered(answer: String){
         _newTripletAnswered.value = answer
     }
 
@@ -102,6 +95,7 @@ class HearXViewModel(private val application: Application) : AndroidViewModel(ap
     fun newRandomizeDigitTriplet() {
         val triplet = arrayListDigits.indices.asSequence().shuffled().take(3).toList()
         viewModelScope.launch {
+            //ra
             playNoise()
             for (digit in triplet) {
                 delay(2000)
@@ -112,52 +106,21 @@ class HearXViewModel(private val application: Application) : AndroidViewModel(ap
         setTripletPlayed(triplet.joinToString(""))
     }
 
-    /*
-    -------------------------------------------------------------------------------------------------------------------------------------
-    */
-
     fun digitInNoiseInit() {
         arrayListDigits = listOf(R.raw.digit_1, R.raw.digit_2, R.raw.digit_3, R.raw.digit_4, R.raw.digit_5, R.raw.digit_6, R.raw.digit_7, R.raw.digit_8, R.raw.digit_9)
         arrayListNoiseLevel = listOf(R.raw.noise_1, R.raw.noise_2, R.raw.noise_3, R.raw.noise_4, R.raw.noise_5, R.raw.noise_6, R.raw.noise_7, R.raw.noise_8, R.raw.noise_9, R.raw.noise_10)
     }
 
-    fun randomizeDigitTriplet() {
-        val triplet = arrayListDigits.indices.asSequence().shuffled().take(3).toList()
-        viewModelScope.launch {
-            //randomise delay
-            playNoise()
-            for (digit in triplet) {
-                delay(2000)
-                playDigits(digit)
-                delay(2000)
-            }
-        }
-        tripletPlayed = triplet.joinToString("")
-    }
-
-    fun playDigits(digit: Int) {
+    private fun playDigits(digit: Int) {
         if (digit > 0) {
             mediaPlayerDigits = MediaPlayer.create(getContext(), arrayListDigits[digit - 1])
             mediaPlayerDigits.start()
         }
     }
 
-    private fun decreaseNoise() {
-        if (currentIndexNoise > 0) {
-            currentIndexNoise -= 1
-        }
-        score -= currentIndexNoise
-    }
-
-    private fun increaseNoise() {
-        if (currentIndexNoise < 9) {
-            currentIndexNoise += 1
-        }
-        score += currentIndexNoise
-    }
-
+    //keep an eye here
     private fun playNoise() {
-        mediaPlayerNoise = MediaPlayer.create(getContext(), arrayListNoiseLevel[currentIndexNoise])
+        mediaPlayerNoise = MediaPlayer.create(getContext(), arrayListNoiseLevel[_newCurrentIndexNoise.value!!])
         mediaPlayerNoise.start()
     }
 
@@ -167,26 +130,4 @@ class HearXViewModel(private val application: Application) : AndroidViewModel(ap
     }
 
     private fun getContext() = application.baseContext
-
-    fun submit(answer: String, bind: () -> FragmentTestBinding) {
-        tripletAnswered = answer
-        val results = "played: $tripletPlayed and answered: $tripletAnswered"
-        testRounds.add(TestRound(currentIndexNoise.toString(), tripletPlayed, tripletAnswered))
-        if (tripletPlayed == tripletAnswered) {
-            increaseNoise()
-        } else {
-            decreaseNoise()
-        }
-        Toast.makeText(getContext(), results, Toast.LENGTH_SHORT).show()
-        if (numberOfRound <= 9) {
-            randomizeDigitTriplet()
-        } else {
-            val completeTest = "Complete Test"
-            bind.invoke().submitButton.text = completeTest
-            //submit the score to the api
-            Log.d("Test-Rounds-Data", "$testRounds")
-            Snackbar.make(bind.invoke().root, "The test has been completed", Snackbar.LENGTH_LONG).show()
-        }
-        bind.invoke().editTextNumber.text.clear()
-    }
 }
