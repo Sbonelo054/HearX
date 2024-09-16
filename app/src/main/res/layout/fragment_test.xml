@@ -1,4 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
+<layout>
+    <data>
+        <variable
+            name="viewModel"
+            type="com.hearx.din.viewmodel.HearXViewModel" />
+        <variable
+            name="presenter"
+            type="com.hearx.din.ui.TestFragment"/>
+    </data>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
@@ -49,13 +58,16 @@
         <Button
             android:id="@+id/submit_button"
             android:layout_width="match_parent"
+            android:onClick="@{()->presenter.submitAnswer()}"
             android:layout_height="wrap_content"
-            android:text="Submit"/>
+            android:text="@string/submit"/>
 
         <Button
             android:id="@+id/exit_button"
+            android:onClick="@{()->presenter.navigateBack()}"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Exit Test"/>
+            android:text="@string/exit_test"/>
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

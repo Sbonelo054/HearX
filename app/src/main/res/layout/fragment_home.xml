@@ -1,4 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
+<layout>
+    <data>
+        <variable
+            name="presenter"
+            type="com.hearx.din.ui.HomeFragment"/>
+    </data>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
@@ -10,7 +16,7 @@
     <ImageView
         android:id="@+id/imageView"
         android:layout_width="0dp"
-        android:layout_height="58dp"
+        android:layout_height="64dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="64dp"
         android:layout_marginEnd="8dp"
@@ -23,19 +29,21 @@
 
     <Button
         android:id="@+id/start_test_button"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_marginTop="272dp"
-        android:text="Start test"
+        android:onClick="@{()->presenter.navigateToTest()}"
+        android:text="@string/start_test"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView" />
 
     <Button
         android:id="@+id/view_results_button"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="View Results"
+        android:text="@string/view_results"
+        android:onClick="@{()->presenter.navigateToHistory()}"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/start_test_button" />
@@ -43,9 +51,9 @@
     <TextView
         android:id="@+id/textView"
         android:layout_width="0dp"
-        android:layout_height="39dp"
+        android:layout_height="40dp"
         android:layout_marginTop="32dp"
-        android:text="Welcome to Hear X"
+        android:text="@string/welcome_to_hear_x"
         android:textColor="@color/white"
         android:textSize="30sp"
         android:textAlignment="center"
@@ -53,3 +61,4 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/imageView" />
 </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>
