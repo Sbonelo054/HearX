@@ -22,9 +22,16 @@ class HomeFragment : Fragment() {
         binding.startTestButton.setOnClickListener {
             navigateToTest()
         }
+        binding.viewResultsButton.setOnClickListener {
+            navigateToHistory()
+        }
     }
 
     private fun navigateToTest(){
         findNavController().navigate(R.id.action_homeFragment_to_testFragment)
+    }
+
+    private fun navigateToHistory(){
+        findNavController().navigate(R.id.action_homeFragment_to_testHistoryFragment)
     }
 }

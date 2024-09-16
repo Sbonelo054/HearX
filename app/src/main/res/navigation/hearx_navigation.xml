@@ -26,9 +26,8 @@
         tools:layout="@layout/fragment_test" />
     <fragment
         android:id="@+id/testHistoryFragment"
-        android:name="com.hearx.din.TestHistoryFragment"
+        android:name="com.hearx.din.ui.HistoryFragment"
         android:label="fragment_test_history"
-        tools:layout="@layout/fragment_test_history" />
-
+        tools:layout="@layout/fragment_history" />
 
 </navigation>

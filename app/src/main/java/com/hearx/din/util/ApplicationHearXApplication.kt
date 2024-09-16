@@ -1,6 +1,7 @@
 package com.hearx.din.util
 
 import android.app.Application
+import com.hearx.din.dependencyinjection.repositoryModule
 import com.hearx.din.dependencyinjection.viewModelModule
 import org.koin.android.ext.koin.androidContext
 import org.koin.android.ext.koin.androidLogger
@@ -12,7 +13,7 @@ class ApplicationHearXApplication: Application() {
         startKoin {
             androidLogger()
             androidContext(this@ApplicationHearXApplication)
-            modules(viewModelModule)
+            modules(repositoryModule,viewModelModule)
         }
     }
 }
