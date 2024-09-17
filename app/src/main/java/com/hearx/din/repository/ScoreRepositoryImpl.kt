@@ -5,7 +5,7 @@ import com.hearx.din.networking.API
 import com.hearx.din.networking.Client
 import kotlinx.coroutines.flow.flow
 
-class ScoreRepositoryImpl: ScoreRepository {
+class ScoreRepositoryImpl : ScoreRepository {
     private lateinit var api: API
 
     override suspend fun submitScore(resultsData: ResultsData) = flow {

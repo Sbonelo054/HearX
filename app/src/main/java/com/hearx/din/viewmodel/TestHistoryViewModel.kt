@@ -11,7 +11,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.launch
 
-class TestHistoryViewModel(application: Application, private val testHistoryRepository: TestHistoryRepository): AndroidViewModel(application) {
+class TestHistoryViewModel(application: Application, private val testHistoryRepository: TestHistoryRepository) : AndroidViewModel(application) {
     private var _testHistory = MutableLiveData<List<TestHistoryTable>>()
     val testHistory: LiveData<List<TestHistoryTable>> get() = _testHistory
 
@@ -19,14 +19,14 @@ class TestHistoryViewModel(application: Application, private val testHistoryRepo
         getTestHistory()
     }
 
-    fun saveTestHistory(testHistoryTable: TestHistoryTable){
+    fun saveTestHistory(testHistoryTable: TestHistoryTable) {
         viewModelScope.launch(Dispatchers.IO) {
             testHistoryRepository.saveTestHistory(testHistoryTable)
         }
     }
 
     private fun getTestHistory() = viewModelScope.launch {
-        testHistoryRepository.getTestHistory().flowOn(Dispatchers.IO).collect{
+        testHistoryRepository.getTestHistory().flowOn(Dispatchers.IO).collect {
             _testHistory.value = it
         }
     }

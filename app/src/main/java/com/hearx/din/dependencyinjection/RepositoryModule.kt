@@ -7,11 +7,11 @@ import com.hearx.din.repository.TestHistoryRepositoryImpl
 import org.koin.dsl.module
 
 val repositoryModule = module {
-    single<ScoreRepository>{
+    single<ScoreRepository> {
         ScoreRepositoryImpl()
     }
 
-    single<TestHistoryRepository>{
+    single<TestHistoryRepository> {
         TestHistoryRepositoryImpl(get())
     }
 }

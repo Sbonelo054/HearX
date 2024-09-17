@@ -29,7 +29,7 @@ class TestFragment : Fragment() {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_test, container, false)
         hearXViewModel.digitInNoiseInit()
         binding.viewModel = hearXViewModel
-        binding.presenter =  this
+        binding.presenter = this
         return binding.root
     }
 
@@ -39,7 +39,7 @@ class TestFragment : Fragment() {
             val round = "Round: $it"
             binding.roundNumber.text = round
         }
-        hearXViewModel.newRandomizeDigitTriplet()
+        hearXViewModel.randomizeDigitTriplet()
     }
 
     private fun saveHistory() {
@@ -57,17 +57,20 @@ class TestFragment : Fragment() {
                     tripletAnswered = it
                 }
                 showScore(score.toString())
-                testHistoryViewModel.saveTestHistory(TestHistoryTable(hearXViewModel.getDate(), score.toString(),tripletPlayed,tripletAnswered))
+                testHistoryViewModel.saveTestHistory(TestHistoryTable(hearXViewModel.getDate(), score.toString(), tripletPlayed, tripletAnswered))
+                hearXViewModel.resetRounds()
+                hearXViewModel.testRounds.observe(viewLifecycleOwner) { list ->
+                    scoreViewModel.submitScore(ResultsData(score, 0, list))
+                }
             }
         }
     }
 
-    private fun showScore(score: String){
+    private fun showScore(score: String) {
         val testScore = getString(R.string.final_score_is, score)
-        val meanResponse = "Mean response in ms : 500"
         val alert: Dialog?
         val builder = AlertDialog.Builder(context)
-        builder.setTitle(testScore).setMessage(meanResponse).setCancelable(true).setPositiveButton(getString(R.string.ok)) { dialog: DialogInterface?, _: Int ->
+        builder.setTitle(testScore).setCancelable(true).setPositiveButton(getString(R.string.ok)) { dialog: DialogInterface?, _: Int ->
             findNavController().navigateUp()
             dialog?.dismiss()
         }
@@ -78,16 +81,13 @@ class TestFragment : Fragment() {
     fun submitAnswer() {
         val answer = binding.editTextNumber.text
         if (answer.isNotEmpty()) {
-            hearXViewModel.newIncreaseNumberOfRounds()
+            hearXViewModel.increaseNumberOfRounds()
             hearXViewModel.numberOfRounds.observe(viewLifecycleOwner) {
-                if(it <= 10){
-                    hearXViewModel.newSubmit(answer.toString())
-                    hearXViewModel.newRandomizeDigitTriplet()
+                if (it <= 10) {
+                    hearXViewModel.submit(answer.toString())
+                    hearXViewModel.randomizeDigitTriplet()
                 } else {
                     saveHistory()
-                    hearXViewModel.testRounds.observe(viewLifecycleOwner) {list->
-                        scoreViewModel.submitScore(ResultsData(0,0,list))
-                    }
                 }
             }
         } else {
