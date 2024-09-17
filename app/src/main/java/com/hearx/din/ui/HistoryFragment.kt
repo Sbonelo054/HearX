@@ -6,13 +6,10 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.hearx.din.R
 import com.hearx.din.adapter.TestHistoryAdapter
 import com.hearx.din.databinding.FragmentHistoryBinding
-import com.hearx.din.databinding.FragmentTestBinding
 import com.hearx.din.viewmodel.TestHistoryViewModel
 import org.koin.android.ext.android.inject
-import org.koin.java.KoinJavaComponent.inject
 
 class HistoryFragment : Fragment() {
     private lateinit var binding: FragmentHistoryBinding
@@ -33,8 +30,8 @@ class HistoryFragment : Fragment() {
     }
 
     private fun showHistory() {
-        historyViewModel.getTestHistory().observe(viewLifecycleOwner) { response ->
-            if (response != null) {
+        historyViewModel.testHistory.observe(viewLifecycleOwner) { response ->
+            if (response.isNullOrEmpty()) {
                 adapter = TestHistoryAdapter(response)
                 binding.historyRecyclerview.setHasFixedSize(true)
                 binding.historyRecyclerview.adapter = adapter

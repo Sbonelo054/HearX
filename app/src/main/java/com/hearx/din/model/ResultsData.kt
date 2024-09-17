@@ -8,4 +8,5 @@ data class ResultsData(
     @SerializedName("mean_response_time_ms")
     @Expose
     var meanResponseTimeMs: Int = 0,
-    var rounds: List<Round>)
+    var rounds: List<TestRound>
+)
