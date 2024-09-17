@@ -6,5 +6,5 @@ import kotlinx.coroutines.flow.Flow
 interface TestHistoryRepository {
     suspend fun saveTestHistory(testHistoryTable: TestHistoryTable)
 
-    fun getTestHistory(): Flow<List<TestHistoryTable>>
+    suspend fun getTestHistory(): Flow<List<TestHistoryTable>>
 }

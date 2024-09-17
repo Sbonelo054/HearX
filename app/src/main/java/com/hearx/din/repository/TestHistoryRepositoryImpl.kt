@@ -20,7 +20,7 @@ class TestHistoryRepositoryImpl(application: Application) : TestHistoryRepositor
         dao.saveHistory(testHistoryTable)
     }
 
-    override fun getTestHistory() = flow {
+    override suspend fun getTestHistory() = flow {
         val history = dao.getHistory()
         emit(history)
     }
