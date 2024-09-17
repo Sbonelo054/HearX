@@ -9,4 +9,6 @@
     <string name="tests_history">Tests History</string>
     <string name="final_score_is">Final score is : %1$s</string>
     <string name="ok">OK</string>
+    <string name="test_was_taken_on">Test was taken on: %1$s</string>
+    <string name="your_score_was">Your score was: %1$s</string>
 </resources>

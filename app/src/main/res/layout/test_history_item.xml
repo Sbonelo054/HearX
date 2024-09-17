@@ -18,28 +18,12 @@
         android:id="@+id/history_score"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="@dimen/smallPadding"
-        android:fontFamily="@font/gotham_book"
-        android:textColor="@color/white" />
-
-    <TextView
-        android:id="@+id/history_played"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="@dimen/smallPadding"
-        android:fontFamily="@font/gotham_book"
-        android:textColor="@color/white" />
-
-    <TextView
-        android:id="@+id/history_answered"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="@dimen/smallPadding"
+        android:layout_margin="@dimen/smallMargin"
         android:fontFamily="@font/gotham_book"
         android:textColor="@color/white" />
 
     <View
         android:layout_width="match_parent"
-        android:layout_height="1dp"
+        android:layout_height="@dimen/miniDimension"
         android:background="@android:color/white" />
 </LinearLayout>
