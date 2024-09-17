@@ -58,6 +58,10 @@ class TestFragment : Fragment() {
                 }
                 showScore(score.toString())
                 testHistoryViewModel.saveTestHistory(TestHistoryTable(hearXViewModel.getDate(), score.toString(),tripletPlayed,tripletAnswered))
+                hearXViewModel.resetRounds()
+                hearXViewModel.testRounds.observe(viewLifecycleOwner) {list->
+                    scoreViewModel.submitScore(ResultsData(score,0,list))
+                }
             }
         }
     }
@@ -85,9 +89,6 @@ class TestFragment : Fragment() {
                     hearXViewModel.newRandomizeDigitTriplet()
                 } else {
                     saveHistory()
-                    hearXViewModel.testRounds.observe(viewLifecycleOwner) {list->
-                        scoreViewModel.submitScore(ResultsData(0,0,list))
-                    }
                 }
             }
         } else {

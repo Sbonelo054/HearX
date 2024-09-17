@@ -103,6 +103,10 @@ class HearXViewModel(private val application: Application) : AndroidViewModel(ap
         }
     }
 
+    fun resetRounds(){
+        _numberOfRounds.value = 1
+    }
+
     private fun playNoise() {
         mediaPlayerNoise = MediaPlayer.create(getContext(), arrayListNoiseLevel[_currentIndexNoise.value!!])
         mediaPlayerNoise.start()
