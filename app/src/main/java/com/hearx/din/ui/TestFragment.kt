@@ -68,10 +68,9 @@ class TestFragment : Fragment() {
 
     private fun showScore(score: String){
         val testScore = getString(R.string.final_score_is, score)
-        val meanResponse = "Mean response in ms : 500"
         val alert: Dialog?
         val builder = AlertDialog.Builder(context)
-        builder.setTitle(testScore).setMessage(meanResponse).setCancelable(true).setPositiveButton(getString(R.string.ok)) { dialog: DialogInterface?, _: Int ->
+        builder.setTitle(testScore).setCancelable(true).setPositiveButton(getString(R.string.ok)) { dialog: DialogInterface?, _: Int ->
             findNavController().navigateUp()
             dialog?.dismiss()
         }
