@@ -51,17 +51,19 @@ class HearXViewModel(private val application: Application) : AndroidViewModel(ap
     fun getDate() = Calendar.getInstance().time.toString().take(11)
 
     private fun increaseNoise() {
-        if (_currentIndexNoise.value!! < 9) {
-            _currentIndexNoise.value = _currentIndexNoise.value?.plus(1)
+        var currentNoiseIndex = _currentIndexNoise.value ?: return
+        if (currentNoiseIndex < 9) {
+            currentNoiseIndex += 1
         }
-        _score.value = _score.value?.plus(_currentIndexNoise.value!!)
+        _score.value = _score.value?.plus(currentNoiseIndex)
     }
 
     private fun decreaseNoise() {
-        if (_currentIndexNoise.value!! > 0) {
-            _currentIndexNoise.value = _currentIndexNoise.value?.minus(1)
+        var currentNoiseIndex = _currentIndexNoise.value ?: return
+        if (currentNoiseIndex > 0) {
+            currentNoiseIndex -= 1
         }
-        _score.value = _score.value?.minus(_currentIndexNoise.value!!)
+        _score.value = _score.value?.minus(currentNoiseIndex)
     }
 
     private fun setTripletPlayed(numbersPlayed: String) {
@@ -73,8 +75,9 @@ class HearXViewModel(private val application: Application) : AndroidViewModel(ap
     }
 
     fun increaseNumberOfRounds() {
-        if (_numberOfRounds.value!! < 10) {
-            _numberOfRounds.value = _numberOfRounds.value?.plus(1)
+        var numberOfRounds = _numberOfRounds.value ?: return
+        if (numberOfRounds < 10) {
+            numberOfRounds -= 1
         }
     }
 
@@ -109,7 +112,8 @@ class HearXViewModel(private val application: Application) : AndroidViewModel(ap
     }
 
     private fun playNoise() {
-        mediaPlayerNoise = MediaPlayer.create(getContext(), arrayListNoiseLevel[_currentIndexNoise.value!!])
+        val currencyIndexNoise = _currentIndexNoise.value ?: return
+        mediaPlayerNoise = MediaPlayer.create(getContext(), arrayListNoiseLevel[currencyIndexNoise])
         mediaPlayerNoise.start()
     }
 
