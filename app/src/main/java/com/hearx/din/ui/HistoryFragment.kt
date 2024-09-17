@@ -32,7 +32,7 @@ class HistoryFragment : Fragment() {
     private fun showHistory() {
         historyViewModel.testHistory.observe(viewLifecycleOwner) { response ->
             if (response.isNullOrEmpty()) {
-                adapter = TestHistoryAdapter(response)
+                adapter = TestHistoryAdapter(requireContext(),response)
                 binding.historyRecyclerview.setHasFixedSize(true)
                 binding.historyRecyclerview.adapter = adapter
                 val linearLayoutManager = LinearLayoutManager(requireActivity())
