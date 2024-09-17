@@ -9,7 +9,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.hearx.din.R
 import com.hearx.din.database.TestHistoryTable
 
-class TestHistoryAdapter(private val context: Context, private val historyList: List<TestHistoryTable>): RecyclerView.Adapter<TestHistoryAdapter.TestHistoryViewHolder>() {
+class TestHistoryAdapter(private val context: Context, private val historyList: List<TestHistoryTable>) : RecyclerView.Adapter<TestHistoryAdapter.TestHistoryViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TestHistoryAdapter.TestHistoryViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.test_history_item, parent, false)

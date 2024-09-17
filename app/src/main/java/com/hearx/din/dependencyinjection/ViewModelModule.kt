@@ -9,6 +9,6 @@ val viewModelModule = module {
     single { HearXViewModel(get()) }
 
     viewModel {
-        TestHistoryViewModel(get(),get())
+        TestHistoryViewModel(get(), get())
     }
 }
